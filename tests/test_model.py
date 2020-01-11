@@ -33,10 +33,12 @@ def test_parameter_initialization():
     perturbations = 3
     delta_time = 0
     macro_time = 0
-    for trial in range(0,trials):
+    for trial in range(0, trials):
         schedule1 = annealer.rand_init()
-        for sample in range(0, perturbations):
+        schedule2 = model.Schedule(parameters, schedule1.schedule)
 
+        for sample in range(0, perturbations):
+            updates = []
             while True:
                 days = random.sample(range(1, 101), 2)
                 family_id = random.choice(range(0, parameters.families))
@@ -48,17 +50,18 @@ def test_parameter_initialization():
                     if 125 <= n1 <= 300 and 125 <= n2 <= 300:
                         update = model.ScheduleUpdate(parameters,
                                                       [[family_id] + days])
+                        updates.append(update)
                         schedule1.update(update)
                         break
 
-        cost1 = schedule1.schedule_cost
-
-        schedule2 = model.Schedule(parameters, schedule1.schedule)
-        #schedule2.update()
+        schedule2.update(updates)
         cost2 = schedule2.schedule_cost
-        print("cost delta", cost1, cost2)
+        cost1 = schedule1.schedule_cost
+        schedule3 = model.Schedule(parameters, schedule1.schedule)
+        cost3 = schedule3.schedule_cost
+        print("\n cost delta", cost1, cost2, cost3)
         error = abs((cost2 - cost1))/cost2
-        print(error)
+
         if error <= 1:
             precision += 1
 

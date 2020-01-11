@@ -28,7 +28,23 @@ init:
     - 36
     - 235
     - 434
+
 data:
   preference_csv: 'data/family_data.csv'
   pc_pickle_dir: 'data'
   pc_pickle_segments: 3
+  output_dir: 'data/output'
+  snapshot_dir: 'data/output/snapshots'
+
+annealer:
+  equilibrium_transitions: 500
+  max_null_steps: 20000000
+  max_static_transitions: 20000000
+  min_temperature: 0
+  cooling_factor: .95
+  upper_nbhd_bound: 2000
+  lower_nbhd_bound: 2000
+  static_nbhd: 100
+  snapshot_delta: 100000
+
+
